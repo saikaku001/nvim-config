@@ -1,62 +1,31 @@
+-- init.lua
 
-require("config")
+-- 1. 基本設定の読み込み
+require('core.options')
+require('core.mappings')
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+-- 2. lazy.nvim の初期設定
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
-vim.fn.system({
-"git",
-"clone",
-"--filter=blob:none",
-"https://github.com/folke/lazy.nvim.git",
-"--branch=stable",
-lazypath,
-})
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable',
+    lazypath,
+  })
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-  { "nvim-lua/plenary.nvim" },
-  {
-    "neovim/nvim-lspconfig",
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "L3MON4D3/LuaSnip",
-    },
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-  },
-  { "nvim-treesitter/nvim-treesitter-textobjects" },
-})
-
-
-vim.lsp.config('pyright', {})
-
-vim.lsp.enable('pyright')
-
-local cmp = require('cmp')
-cmp.setup({
-  mapping = cmp.mapping.preset.insert({
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true })
-  })
-})
-
-require('nvim-treesitter.configs').setup({
-  ensure_installed = { 'lua', 'python', 'typescript', 'vim' },
-  highlight = { enable = true },
-  indent = { enable = true },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = 'gnn',
-      node_incremental = 'grn',
-      node_decremental = 'grm'
+-- 3. lazy.nvim のセットアップ
+require('lazy').setup(
+    -- lua/plugins/init.lua が返すプラグインのテーブルを渡す
+    require('plugins'),
+    {
+        -- lazy.nvim のオプション (例: デバッグ、UIなど)
+        change_detection = {
+            notify = false, -- 設定変更時の通知をオフにする
+        },
     }
-  }
-})
-
+)
