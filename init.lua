@@ -20,9 +20,10 @@ vim.opt.rtp:prepend(lazypath)
 
 -- 3. lazy.nvim のセットアップ
 require('lazy').setup(
-    -- lua/plugins/init.lua が返すプラグインのテーブルを渡す
-    require('plugins'),
     {
+	spec = {
+	    { import = "plugins" },
+	},
         -- lazy.nvim のオプション (例: デバッグ、UIなど)
         change_detection = {
             notify = false, -- 設定変更時の通知をオフにする
