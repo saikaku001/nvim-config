@@ -95,7 +95,7 @@ return {
         mason_lspconfig.setup({
             -- list of servers for mason to install
             ensure_installed = {
-                "ts_ls",
+                "tsserver",
                 "html",
                 "cssls",
                 "tailwindcss",
@@ -106,20 +106,23 @@ return {
             },
         })
 
-        mason_lspconfig.setup_handlers({
-            -- default handler for installed servers
-            function(server_name)
+        local servers = {
+            "tsserver",
+            "html",
+            "cssls",
+            "tailwindcss",
+            "lua_ls",
+            "emmet_ls",
+            "prismals",
+            "pyright",
+        }
+
+        for _, server_name in ipairs(servers) do
+            if server_name == "lua_ls" then
                 lspconfig[server_name].setup({
-                    capabilities = capabilities,
-                })
-            end,
-            ["lua_ls"] = function()
-                -- configure lua server (with special settings)
-                lspconfig["lua_ls"].setup({
                     capabilities = capabilities,
                     settings = {
                         Lua = {
-                            -- make the language server recognize "vim" global
                             diagnostics = {
                                 globals = { "vim" },
                             },
@@ -129,7 +132,11 @@ return {
                         },
                     },
                 })
-            end,
-        })
+            else
+                lspconfig[server_name].setup({
+                    capabilities = capabilities,
+                })
+            end
+        end
     end,
 }
