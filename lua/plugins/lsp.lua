@@ -8,6 +8,20 @@ return {
         { "folke/neodev.nvim", opts = {} },
     },
     config = function()
+        -- Hack: Suppress nvim-lspconfig deprecation warning on Neovim 0.11
+        -- This prevents a crash caused by the deprecation notice in recent nvim-lspconfig versions
+        if vim.fn.has("nvim-0.11") == 1 then
+            local old_deprecate = vim.deprecate
+            vim.deprecate = function(msg, ...)
+                if msg and type(msg) == "string" and msg:find("lspconfig") then
+                    return
+                end
+                if old_deprecate then
+                    return old_deprecate(msg, ...)
+                end
+            end
+        end
+
         -- import lspconfig plugin
         local lspconfig = require("lspconfig")
 
