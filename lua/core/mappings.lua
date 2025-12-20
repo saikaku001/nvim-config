@@ -41,7 +41,7 @@ vim.keymap.set('n', 'x', '"_x', opts)
 
 -- ToggleTerm
 -- ターミナルの開閉 (Ctrl + \)
-vim.keymap.set({ 'n', 't' }, '<C-\\>', '<cmd>ToggleTerm<CR>', opts)
+vim.keymap.set({ 'n', 't' }, '<C-t>', '<cmd>ToggleTerm<CR>', opts)
 
 -- ターミナルモードでの操作
 -- Esc または jk でターミナルモードから抜ける
