@@ -22,6 +22,9 @@ vim.keymap.set('n', '<S-l>', ':bnext<CR>', opts)
 -- バッファを閉じる (Leader + c)
 vim.keymap.set('n', '<leader>c', ':bdelete<CR>', opts)
 
+-- 全終了 (Leader + q)
+vim.keymap.set('n', '<leader>q', ':qa<CR>', opts)
+
 -- 選択範囲をインデント（< や >）する際、選択範囲を維持する
 vim.keymap.set('v', '<', '<gv', opts)
 vim.keymap.set('v', '>', '>gv', opts)
