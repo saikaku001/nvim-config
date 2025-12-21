@@ -28,11 +28,18 @@ map('n', '<S-l>', '<cmd>BufferLineCycleNext<CR>', 'Next buffer')
 map('n', '<Tab>', '<cmd>BufferLineCycleNext<CR>', 'Next buffer')
 map('n', '<S-Tab>', '<cmd>BufferLineCyclePrev<CR>', 'Previous buffer')
 
+-- タブの移動 (Leader + tn/tp)
+map('n', '<leader>tn', '<cmd>tabnext<CR>', 'Next tab')
+map('n', '<leader>tp', '<cmd>tabprevious<CR>', 'Previous tab')
+
 -- バッファを閉じる (Leader + c)
 map('n', '<leader>c', ':bdelete<CR>', 'Close buffer')
 
 -- 全終了 (Leader + q)
-map('n', '<leader>q', ':qa<CR>', 'Quit all')
+map('n', '<leader>qa', ':qa!<CR>', 'Quit all')
+map('n', '<leader>qq', ':q!<CR>', 'Quit current window')
+map('n', '<leader>wqa', ':wqa!<CR>', 'Quit all')
+map('n', '<leader>wqq', ':wq!<CR>', 'Quit current window')
 
 -- 選択範囲をインデント（< や >）する際、選択範囲を維持する
 map('v', '<', '<gv', 'Indent left')
@@ -126,3 +133,9 @@ vim.api.nvim_create_autocmd("FileType", {
         buf_map("n", "g\\", actions.toggle_trash.callback, "Toggle trash")
     end,
 })
+
+-- vim-sandwich
+map('n', 'sa', '<Plug>(operator-sandwich-add)', 'Add surrounding')
+map('n', 'sd', '<Plug>(operator-sandwich-delete)', 'Delete surrounding')
+map('n', 'sc', '<Plug>(operator-sandwich-replace)', 'Change surrounding')
+map('v', 'S', '<Plug>(operator-sandwich-add)', 'Add surrounding in visual mode')
