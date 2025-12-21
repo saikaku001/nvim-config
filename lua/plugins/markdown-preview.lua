@@ -5,7 +5,7 @@ return {
     { "<leader>md", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview Toggle" },
   },
   ft = { "markdown" },
-  build = function() vim.fn["mkdp#util#install"]() end,
+  build = "cd app && npm install",
   config = function()
     vim.g.mkdp_filetypes = { "markdown" }
     -- Mermaid を有効にする設定（デフォルトで有効だが明示的に確認）
