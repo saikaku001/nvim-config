@@ -1,98 +1,122 @@
-local opts = { noremap = true, silent = true }
+local map = function(mode, lhs, rhs, desc)
+  local opts = { noremap = true, silent = true, desc = desc }
+  vim.keymap.set(mode, lhs, rhs, opts)
+end
 
 -- jk でインサートモードを抜ける
-vim.keymap.set('i', '<leader>jk', '<ESC>', opts)
+map('i', '<leader>jk', '<ESC>', 'Exit insert mode')
 
 -- 検索ハイライトを消す (Leader + h)
-vim.keymap.set('n', '<leader>h', ':nohlsearch<CR>', opts)
+map('n', '<leader>h', ':nohlsearch<CR>', 'Clear search highlights')
 
 -- ファイル保存 (Leader + w)
-vim.keymap.set('n', '<leader>w', ':w<CR>', opts)
+map('n', '<leader>w', ':w<CR>', 'Save file')
 
 -- ウィンドウ間の移動（Ctrl + H/J/K/L）
-vim.keymap.set('n', '<C-h>', '<C-w>h', opts)
-vim.keymap.set('n', '<C-j>', '<C-w>j', opts)
-vim.keymap.set('n', '<C-k>', '<C-w>k', opts)
-vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
+map('n', '<C-h>', '<C-w>h', 'Move to left window')
+map('n', '<C-j>', '<C-w>j', 'Move to lower window')
+map('n', '<C-k>', '<C-w>k', 'Move to upper window')
+map('n', '<C-l>', '<C-w>l', 'Move to right window')
 
 -- バッファの移動 (Shift + h/l)
-vim.keymap.set('n', '<S-h>', ':bprevious<CR>', opts)
-vim.keymap.set('n', '<S-l>', ':bnext<CR>', opts)
+map('n', '<S-h>', ':bprevious<CR>', 'Previous buffer')
+map('n', '<S-l>', ':bnext<CR>', 'Next buffer')
 
 -- バッファを閉じる (Leader + c)
-vim.keymap.set('n', '<leader>c', ':bdelete<CR>', opts)
+map('n', '<leader>c', ':bdelete<CR>', 'Close buffer')
 
 -- 全終了 (Leader + q)
-vim.keymap.set('n', '<leader>q', ':qa<CR>', opts)
+map('n', '<leader>q', ':qa<CR>', 'Quit all')
 
 -- 選択範囲をインデント（< や >）する際、選択範囲を維持する
-vim.keymap.set('v', '<', '<gv', opts)
-vim.keymap.set('v', '>', '>gv', opts)
+map('v', '<', '<gv', 'Indent left')
+map('v', '>', '>gv', 'Indent right')
 
 -- ビジュアルモードで行を移動 (J/K)
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", opts)
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", opts)
+map("v", "J", ":m '>+1<CR>gv=gv", 'Move line down')
+map("v", "K", ":m '<-2<CR>gv=gv", 'Move line up')
 
 -- クリップボード操作 (Leader + y/p)
 -- システムクリップボードへのコピー
-vim.keymap.set({ 'n', 'v' }, '<leader>y', '"+y', opts)
+map({ 'n', 'v' }, '<leader>y', '"+y', 'Copy to system clipboard')
 -- システムクリップボードからのペースト
-vim.keymap.set({ 'n', 'v' }, '<leader>p', '"+p', opts)
+map({ 'n', 'v' }, '<leader>p', '"+p', 'Paste from system clipboard')
 
 -- x で文字を削除したときにレジスタに入れない
-vim.keymap.set('n', 'x', '"_x', opts)
+map('n', 'x', '"_x', 'Delete char without yank')
 
 -- ToggleTerm
 -- ターミナルの開閉 (Ctrl + \)
-vim.keymap.set({ 'n', 't' }, '<C-t>', '<cmd>ToggleTerm<CR>', opts)
+map({ 'n', 't' }, '<C-t>', '<cmd>ToggleTerm<CR>', 'Toggle terminal')
+
+-- ターミナルを Vim の起動パス (CWD) で開く (Leader + tv)
+map('n', '<leader>tv', function()
+  local count = 1
+  require("toggleterm").toggle(count, nil, vim.g.startup_cwd, "float")
+end, 'Toggle terminal (root dir)')
+
+-- ターミナルを現在のファイルのディレクトリで開く (Leader + tf)
+map('n', '<leader>tf', function()
+  local count = 2
+  local dir = vim.fn.expand("%:p:h")
+  if dir == "" then
+    dir = vim.fn.getcwd()
+  end
+  if dir:match("^oil://") then
+    dir = dir:gsub("^oil://", "")
+  end
+  require("toggleterm").toggle(count, nil, dir, "float")
+end, 'Toggle terminal (current dir)')
 
 -- ターミナルモードでの操作
 -- Esc または jk でターミナルモードから抜ける
-vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
-vim.keymap.set('t', '<leader>jk', [[<C-\><C-n>]], opts)
+map('t', '<esc>', [[<C-\><C-n>]], 'Exit terminal mode')
+map('t', '<leader>jk', [[<C-\><C-n>]], 'Exit terminal mode')
 
 -- ターミナルウィンドウ間の移動
-vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+map('t', '<C-h>', [[<Cmd>wincmd h<CR>]], 'Move to left window')
+map('t', '<C-j>', [[<Cmd>wincmd j<CR>]], 'Move to lower window')
+map('t', '<C-k>', [[<Cmd>wincmd k<CR>]], 'Move to upper window')
+map('t', '<C-l>', [[<Cmd>wincmd l<CR>]], 'Move to right window')
 
 -- Telescope
 -- ファイル検索 (Leader + ff)
-vim.keymap.set('n', '<leader>ff', function() require('telescope.builtin').find_files() end, opts)
+map('n', '<leader>ff', function() require('telescope.builtin').find_files() end, 'Find files')
 -- 文字列検索 (Leader + fg)
-vim.keymap.set('n', '<leader>fg', function() require('telescope.builtin').live_grep() end, opts)
+map('n', '<leader>fg', function() require('telescope.builtin').live_grep() end, 'Live grep')
 -- バッファ検索 (Leader + fb)
-vim.keymap.set('n', '<leader>fb', function() require('telescope.builtin').buffers() end, opts)
+map('n', '<leader>fb', function() require('telescope.builtin').buffers() end, 'Find buffers')
 -- ヘルプ検索 (Leader + fh)
-vim.keymap.set('n', '<leader>fh', function() require('telescope.builtin').help_tags() end, opts)
+map('n', '<leader>fh', function() require('telescope.builtin').help_tags() end, 'Help tags')
 
 -- Oil
 -- 親ディレクトリを開く (-)
-vim.keymap.set('n', '<leader>e', '<CMD>Oil<CR>', opts)
+map('n', '<leader>e', '<CMD>Oil<CR>', 'Open file explorer')
 
 -- Oil バッファ内でのキーマップ
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "oil",
     callback = function()
         local actions = require("oil.actions")
-        local buf_opts = { buffer = true, silent = true }
+        local function buf_map(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = true, silent = true, desc = desc })
+        end
 
-        vim.keymap.set("n", "g?", actions.show_help.callback, buf_opts)
-        vim.keymap.set("n", "<CR>", actions.select.callback, buf_opts)
-        vim.keymap.set("n", "<C-v>", actions.select_vsplit.callback, buf_opts)
-        vim.keymap.set("n", "<C-x>", actions.select_split.callback, buf_opts)
-        vim.keymap.set("n", "<C-t>", actions.select_tab.callback, buf_opts)
-        vim.keymap.set("n", "<C-p>", actions.preview.callback, buf_opts)
-        vim.keymap.set("n", "<C-c>", actions.close.callback, buf_opts)
-        vim.keymap.set("n", "R", actions.refresh.callback, buf_opts)
-        vim.keymap.set("n", "-", actions.parent.callback, buf_opts)
-        vim.keymap.set("n", "_", actions.open_cwd.callback, buf_opts)
-        vim.keymap.set("n", "`", actions.cd.callback, buf_opts)
-        vim.keymap.set("n", "~", actions.tcd.callback, buf_opts)
-        vim.keymap.set("n", "gs", actions.change_sort.callback, buf_opts)
-        vim.keymap.set("n", "gx", actions.open_external.callback, buf_opts)
-        vim.keymap.set("n", "g.", actions.toggle_hidden.callback, buf_opts)
-        vim.keymap.set("n", "g\\", actions.toggle_trash.callback, buf_opts)
+        buf_map("n", "g?", actions.show_help.callback, "Show help")
+        buf_map("n", "<CR>", actions.select.callback, "Select")
+        buf_map("n", "<C-v>", actions.select_vsplit.callback, "Select vsplit")
+        buf_map("n", "<C-x>", actions.select_split.callback, "Select split")
+        buf_map("n", "<C-t>", actions.select_tab.callback, "Select tab")
+        buf_map("n", "<C-p>", actions.preview.callback, "Preview")
+        buf_map("n", "<C-c>", actions.close.callback, "Close")
+        buf_map("n", "R", actions.refresh.callback, "Refresh")
+        buf_map("n", "-", actions.parent.callback, "Parent directory")
+        buf_map("n", "_", actions.open_cwd.callback, "Open CWD")
+        buf_map("n", "`", actions.cd.callback, "CD")
+        buf_map("n", "~", actions.tcd.callback, "TCD")
+        buf_map("n", "gs", actions.change_sort.callback, "Change sort")
+        buf_map("n", "gx", actions.open_external.callback, "Open external")
+        buf_map("n", "g.", actions.toggle_hidden.callback, "Toggle hidden")
+        buf_map("n", "g\\", actions.toggle_trash.callback, "Toggle trash")
     end,
 })

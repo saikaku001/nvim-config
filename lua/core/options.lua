@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.g.startup_cwd = vim.fn.getcwd()
 vim.o.number = true
 vim.o.relativenumber = true
 
