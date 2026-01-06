@@ -6,8 +6,8 @@ vim.o.cursorline = true
 vim.o.cursorcolumn = true
 
 vim.opt.termguicolors = true
-vim.opt.winblend = 0 -- ウィンドウの不透明度
-vim.opt.pumblend = 0 -- ポップアップメニューの不透明度
+vim.opt.winblend = 10 -- ウィンドウの不透明度
+vim.opt.pumblend = 10 -- ポップアップメニューの不透明度
 
 
 vim.o.clipboard = "unnamedplus"
@@ -37,4 +37,11 @@ vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.softtabstop = 4
 
-
+-- Transparency
+vim.api.nvim_create_autocmd("ColorScheme", {
+	pattern = "*",
+	callback = function()
+		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	end,
+})
