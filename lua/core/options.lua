@@ -37,11 +37,10 @@ vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.softtabstop = 4
 
--- Transparency
-vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "*",
-	callback = function()
-		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-	end,
-})
+-- 背景透過設定 (エディタ全体の背景をターミナル背景に合わせる)
+vim.cmd([[
+  highlight Normal guibg=none
+  highlight NonText guibg=none
+  highlight Normal ctermbg=none
+  highlight NonText ctermbg=none
+]])
