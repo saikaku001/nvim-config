@@ -5,6 +5,10 @@ vim.o.relativenumber = true
 vim.o.cursorline = true
 vim.o.cursorcolumn = true
 
+vim.opt.termguicolors = true
+vim.opt.winblend = 0 -- ウィンドウの不透明度
+vim.opt.pumblend = 0 -- ポップアップメニューの不透明度
+
 
 vim.o.clipboard = "unnamedplus"
 
