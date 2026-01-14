@@ -35,6 +35,17 @@ map('n', '<leader>tp', '<cmd>tabprevious<CR>', 'Previous tab')
 -- バッファを閉じる (Leader + c)
 map('n', '<leader>c', ':bdelete<CR>', 'Close buffer')
 
+-- 他のバッファをすべて閉じる (Leader + bo)
+map('n', '<leader>bo', function()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local buffers = vim.api.nvim_list_bufs()
+  for _, buf in ipairs(buffers) do
+    if buf ~= current_buf and vim.api.nvim_buf_is_valid(buf) and vim.fn.buflisted(buf) == 1 then
+      vim.api.nvim_buf_delete(buf, {})
+    end
+  end
+end, 'Close all other buffers')
+
 -- 全終了 (Leader + q)
 map('n', '<leader>qa', ':qa!<CR>', 'Quit all')
 map('n', '<leader>qq', ':q!<CR>', 'Quit current window')
