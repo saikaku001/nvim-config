@@ -151,6 +151,16 @@ map('n', 'sd', '<Plug>(operator-sandwich-delete)', 'Delete surrounding')
 map('n', 'sc', '<Plug>(operator-sandwich-replace)', 'Change surrounding')
 map('v', 'S', '<Plug>(operator-sandwich-add)', 'Add surrounding in visual mode')
 
+-- pr-reviewer.nvim
+map('n', '<leader>pr', '<cmd>PR<cr>', 'PR Review Menu')
+map('n', '<leader>pl', '<cmd>PRListReviewRequests<cr>', 'PR List Review Requests')
+map('n', '<leader>ps', '<cmd>PRLoadLastSession<cr>', 'PR Load Last Session')
+map('n', '<leader>pi', '<cmd>PRInfo<cr>', 'PR Info')
+map('v', '<leader>pr', '<cmd>PR<cr>', 'PR Review Menu')
+map('v', '<leader>pl', '<cmd>PRListReviewRequests<cr>', 'PR List Review Requests')
+map('v', '<leader>ps', '<cmd>PRLoadLastSession<cr>', 'PR Load Last Session')
+map('v', '<leader>pi', '<cmd>PRInfo<cr>', 'PR Info')
+
 -- Copilot Chat
 -- モデル選択 (Leader + cm)
 map('n', '<leader>cm', ':CopilotChatModels<CR>', 'Copilot Chat Models')
